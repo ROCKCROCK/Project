@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_core/firebase_core.dart';
 //import 'package:fitbuddy/page/login.dart';
 import 'package:flutter/material.dart';
 import 'package:fitbuddy/my_flutter_app_icons.dart';
@@ -22,14 +25,15 @@ class _signupState extends State<signup> {
   final weightcontroller = TextEditingController();
   final heightcontroller = TextEditingController();
   final imagePicker = ImagePicker();
+  String imageURL = '';
 
   void signUserup() async {
-    if (passwordcontroller.text.isEmpty) {
-      // Show an error message or handle the case where email or password is empty.
-      print('Email or password is empty');
-    } else {
-      print('Email or password is not empty');
-    }
+    // if (passwordcontroller.text.isEmpty) {
+    // Show an error message or handle the case where email or password is empty.
+    //   print('Email or password is empty');
+    // } else {
+    //   print('Email or password is not empty');
+    // }
     showDialog(
         context: context,
         builder: (context) {
@@ -45,6 +49,7 @@ class _signupState extends State<signup> {
         emailcontroller.text.trim(),
         int.parse(weightcontroller.text.trim()),
         int.parse(heightcontroller.text.trim()),
+        imageURL,
       );
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
@@ -100,17 +105,41 @@ class _signupState extends State<signup> {
   }
 
   Future addUserdetails(
-      String name, String email, int weight, int height) async {
+      String name, String email, int weight, int height, String? image) async {
     await FirebaseFirestore.instance.collection('users').add({
       'name': name,
       'email': email,
       'weight': weight,
       'height': height,
+      if (image != null) 'image': image,
     });
   }
 
   void pickImage() async {
     XFile? File = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (File != null) {
+      uploadImage(File);
+    } else {
+      return;
+    }
+  }
+
+  void uploadImage(XFile file) async {
+    String imageURLdum = '';
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference fileRef = referenceRoot.child('profile images');
+    String fileName = file.name;
+    Reference imageRef = fileRef.child('$fileName');
+
+    try {
+      await imageRef.putFile(File(file!.path));
+      imageURLdum = await imageRef.getDownloadURL();
+      setState(() {
+        imageURL = imageURLdum;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -138,9 +167,11 @@ class _signupState extends State<signup> {
             children: [
               Stack(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 60,
-                    backgroundImage: AssetImage('assets/profile.png'),
+                    backgroundImage: imageURL.isNotEmpty
+                        ? NetworkImage(imageURL)
+                        : AssetImage('assets/profile.png') as ImageProvider,
                   ),
                   Positioned(
                     bottom: 0,
