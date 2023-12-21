@@ -1,9 +1,10 @@
+import 'package:fitbuddy/page/side_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fitbuddy/workout_data.dart';
-import 'package:fitbuddy/exercise_page.dart';
+import 'package:fitbuddy/db/workout_data.dart';
+import 'package:fitbuddy/page/exercise_page.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'heat_map.dart';
+import '../component/heat_map.dart';
 
 class workoutPage extends StatefulWidget {
   const workoutPage({super.key});
@@ -16,7 +17,7 @@ class _workoutPageState extends State<workoutPage> {
   void initState() {
     super.initState();
     Provider.of<WorkoutData>(context, listen: false).initializeWorkoutList();
-}
+  }
 
   final newWorkoutNameController = TextEditingController();
   void createNewWorkout() {
@@ -104,6 +105,12 @@ class _workoutPageState extends State<workoutPage> {
     return Consumer<WorkoutData>(
       builder: (context, value, child) => Scaffold(
         backgroundColor: Colors.red,
+        drawer: sidedrawer(),
+        appBar: AppBar(
+          title: const Text('Workout'),
+          backgroundColor: Colors.red,
+          centerTitle: true,
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: createNewWorkout,
           child: const Icon(Icons.add),
@@ -112,7 +119,6 @@ class _workoutPageState extends State<workoutPage> {
           children: [
             heatmap(
               datasets: value.heatMapDataSet,
-              startDateYYYYMMDD: value.getStartDate(),
             ),
             ListView.builder(
               shrinkWrap: true,

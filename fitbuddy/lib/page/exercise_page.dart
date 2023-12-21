@@ -1,6 +1,7 @@
-import 'package:fitbuddy/exercise_tile.dart';
-import 'package:fitbuddy/workout_data.dart';
+import 'package:fitbuddy/component/exercise_tile.dart';
+import 'package:fitbuddy/db/workout_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
 class exercisePage extends StatefulWidget {
@@ -75,6 +76,11 @@ class _exercisePageState extends State<exercisePage> {
     clear();
   }
 
+  void deleteWorkout(String workoutName, int index) {
+    Provider.of<WorkoutData>(context, listen: false)
+        .deleteWorkout1(workoutName, index);
+  }
+
   void cancel() {
     Navigator.pop(context);
     clear();
@@ -99,7 +105,21 @@ class _exercisePageState extends State<exercisePage> {
             margin: const EdgeInsets.all(25),
             child: ListView.builder(
                 itemCount: value.numberOfWorkout(widget.workoutName),
-                itemBuilder: (context, index) => ExerciseTile(
+                itemBuilder: (context, index) => Slidable(
+                    key: const ValueKey(0),
+                    endActionPane: ActionPane(
+                      motion: const ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          label: "Delete",
+                          autoClose: true,
+                          icon: Icons.delete,
+                          onPressed: (context) =>
+                              deleteWorkout(widget.workoutName, index),
+                        ),
+                      ],
+                    ),
+                    child: ExerciseTile(
                       exerciseName: value
                           .getWorkout(widget.workoutName)
                           .exercises[index]
@@ -126,7 +146,7 @@ class _exercisePageState extends State<exercisePage> {
                               .getWorkout(widget.workoutName)
                               .exercises[index]
                               .name),
-                    )),
+                    ))),
           )),
     );
   }

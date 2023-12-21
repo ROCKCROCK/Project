@@ -1,6 +1,6 @@
-import 'package:fitbuddy/date_time.dart';
-import 'package:fitbuddy/exercise.dart';
-import 'package:fitbuddy/workout.dart';
+import 'package:fitbuddy/db/date_time.dart';
+import 'package:fitbuddy/db/exercise.dart';
+import 'package:fitbuddy/db/workout.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HiveDatabase {

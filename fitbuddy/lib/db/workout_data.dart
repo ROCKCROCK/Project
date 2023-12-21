@@ -1,7 +1,7 @@
-import 'package:fitbuddy/date_time.dart';
-import 'package:fitbuddy/exercise.dart';
-import 'package:fitbuddy/workout.dart';
-import 'package:fitbuddy/hive_db.dart';
+import 'package:fitbuddy/db/date_time.dart';
+import 'package:fitbuddy/db/exercise.dart';
+import 'package:fitbuddy/db/workout.dart';
+import 'package:fitbuddy/db/hive_db.dart';
 import 'package:flutter/material.dart';
 
 class WorkoutData extends ChangeNotifier {
@@ -56,6 +56,7 @@ class WorkoutData extends ChangeNotifier {
     db.saveToDatabase(workoutList);
     loadHeatMap();
   }
+
 // edit workout name
   void editWorkoutName(String workoutName, String newWorkoutName) {
     Workout relevantWorkout = getWorkout(workoutName);
@@ -63,6 +64,7 @@ class WorkoutData extends ChangeNotifier {
     notifyListeners();
     db.saveToDatabase(workoutList);
   }
+
   Workout getWorkout(String workoutName) {
     return workoutList.firstWhere((workout) => workout.name == workoutName);
   }
@@ -100,6 +102,13 @@ class WorkoutData extends ChangeNotifier {
 
   void deleteWorkout(int index) {
     workoutList.removeAt(index);
+    notifyListeners();
+    db.saveToDatabase(workoutList);
+  }
+
+  void deleteWorkout1(String workoutName, int index) {
+    Workout relevantWorkout = getWorkout(workoutName);
+    relevantWorkout.exercises.removeAt(index);
     notifyListeners();
     db.saveToDatabase(workoutList);
   }

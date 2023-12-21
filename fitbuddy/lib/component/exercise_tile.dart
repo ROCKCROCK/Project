@@ -19,7 +19,11 @@ class ExerciseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.yellow,
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: isCompleted ? Colors.green : Colors.green[100],
+      ),
       child: ListTile(
           title: Text(exerciseName),
           subtitle: Row(

@@ -1,5 +1,7 @@
-import 'package:fitbuddy/workout_page.dart';
+import 'package:fitbuddy/authentication/auth.dart';
+//import 'package:fitbuddy/workout_page.dart';
 import 'package:flutter/material.dart';
+//import 'login.dart';
 
 class fit extends StatefulWidget {
   const fit({super.key});
@@ -61,7 +63,7 @@ class _fitState extends State<fit> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const workoutPage()));
+                                builder: (context) => const auth_page()));
                       },
                       child: Container(
                         height: 50,
