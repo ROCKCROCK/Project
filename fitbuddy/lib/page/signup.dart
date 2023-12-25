@@ -106,7 +106,9 @@ class _signupState extends State<signup> {
 
   Future addUserdetails(
       String name, String email, int weight, int height, String? image) async {
-    await FirebaseFirestore.instance.collection('users').add({
+    final User? user = FirebaseAuth.instance.currentUser;
+    final uid = user!.uid;
+    await FirebaseFirestore.instance.collection('users').doc(uid).set({
       'name': name,
       'email': email,
       'weight': weight,
