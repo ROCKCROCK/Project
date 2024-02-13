@@ -97,6 +97,7 @@ class _exercisePageState extends State<exercisePage> {
   Widget build(BuildContext context) {
     return Consumer<WorkoutData>(
       builder: (context, value, child) => Scaffold(
+          backgroundColor: Colors.red,
           floatingActionButton: FloatingActionButton(
             onPressed: createExercise,
             child: const Icon(Icons.add),

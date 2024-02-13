@@ -45,18 +45,18 @@ class _workoutPageState extends State<workoutPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Edit Workout Name"),
+        title: const Text("Edit Workout Name"),
         content: TextField(
           controller: newWorkoutNameController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: "Workout Name",
             hintText: "Enter Workout Name",
           ),
         ),
         actions: [
           MaterialButton(
-              onPressed: () => save1(workoutName), child: Text("Save")),
-          MaterialButton(onPressed: cancel, child: Text("Cancel")),
+              onPressed: () => save1(workoutName), child: const Text("Save")),
+          MaterialButton(onPressed: cancel, child: const Text("Cancel")),
         ],
       ),
     );
@@ -115,67 +115,66 @@ class _workoutPageState extends State<workoutPage> {
           onPressed: createNewWorkout,
           child: const Icon(Icons.add),
         ),
-        body: ListView(
+        body: Column(
           children: [
             heatmap(
               datasets: value.heatMapDataSet,
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: value.getWorkoutList().length,
-              itemBuilder: (context, index) => Slidable(
-                key: const ValueKey(0),
-                endActionPane: ActionPane(
-                  extentRatio: 0.7,
-                  motion: ScrollMotion(),
-                  children: [
-                    SlidableAction(
-                      onPressed: (context) => deleteWorkout(index),
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      backgroundColor: Color.fromARGB(229, 192, 117, 3),
-                      foregroundColor: Colors.white,
-                      icon: Icons.delete,
-                      label: 'Delete',
-                    ),
-                    SlidableAction(
-                      onPressed: (context) =>
-                          editWorkoutName(value.getWorkoutList()[index].name),
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      backgroundColor: Color(0xFF21B7CA),
-                      foregroundColor: Colors.white,
-                      icon: Icons.edit,
-                      label: 'Edit',
-                    ),
-                  ],
-                ),
-                child: Container(
-                  height: 70,
-                  width: double.infinity,
-                  margin: const EdgeInsets.all(25),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                    ).merge(
-                      ButtonStyle(
-                        elevation: MaterialStateProperty.all<double>(
-                            0), // Remove button elevation
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: value.getWorkoutList().length,
+                itemBuilder: (context, index) => Slidable(
+                  key: const ValueKey(0),
+                  endActionPane: ActionPane(
+                    extentRatio: 0.7,
+                    motion: ScrollMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: (context) => deleteWorkout(index),
+                        autoClose: true,
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        backgroundColor: Colors.transparent,
+                        foregroundColor: Colors.white,
+                        icon: Icons.delete,
+                        label: 'Delete',
                       ),
-                    ),
-                    onPressed: () =>
-                        gotoExercise(value.getWorkoutList()[index].name),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        value.getWorkoutList()[index].name,
-                        style: TextStyle(fontSize: 16),
+                      SlidableAction(
+                        onPressed: (context) =>
+                            editWorkoutName(value.getWorkoutList()[index].name),
+                        autoClose: true,
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        backgroundColor: Colors.transparent,
+                        foregroundColor: Colors.white,
+                        icon: Icons.edit,
+                        label: 'Edit',
+                      ),
+                    ],
+                  ),
+                  child: Container(
+                    height: 70,
+                    width: double.infinity,
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFd90429),
+                        foregroundColor: Colors.white,
+                        side: const BorderSide(color: Colors.white, width: 2),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 5,
+                      ),
+                      onPressed: () =>
+                          gotoExercise(value.getWorkoutList()[index].name),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text(
+                          value.getWorkoutList()[index].name,
+                          style: TextStyle(fontSize: 40),
+                        ),
                       ),
                     ),
                   ),

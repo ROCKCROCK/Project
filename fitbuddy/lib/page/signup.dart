@@ -134,7 +134,7 @@ class _signupState extends State<signup> {
     Reference imageRef = fileRef.child('$fileName');
 
     try {
-      await imageRef.putFile(File(file!.path));
+      await imageRef.putFile(File(file.path));
       imageURLdum = await imageRef.getDownloadURL();
       setState(() {
         imageURL = imageURLdum;

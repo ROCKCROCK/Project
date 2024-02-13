@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitbuddy/page/bmicalculator.dart';
 //import 'package:fitbuddy/login.dart';
 import 'package:flutter/material.dart';
 
@@ -102,6 +103,14 @@ class _sidedrawerState extends State<sidedrawer> {
             leading: Icon(Icons.person),
             title: Text('Profile'),
             onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.calculate),
+            title: Text('BMI Calculator'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const BMI_page()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.info),
